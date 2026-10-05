@@ -11,6 +11,9 @@
  *   verify_tool_call   Verify a tool call against CCS 7 dimensions + semantic + math
  *   issue_evidence     Issue a signed CCS evidence record (allow + deny)
  *   audit_mcp_config   Audit an MCP server configuration for security risks
+ *   verify_intent_binding  Verify call arguments match declared intent
+ *   verify_receipt     Offline-verify a CCS Ed25519-signed receipt
+ *   locate_tampering   Field-level localization of which fields differ (RFC 6901)
  *
  * Transport: stdio (per MCP spec). To run:
  *   npx @correctover/ccs-mcp-server
@@ -28,6 +31,7 @@ const crypto = require("crypto");
 const readline = require("readline");
 const receipts = require("./receipts");
 const skillpay = require("./skillpay");
+const tamper = require("./locate_tampering");
 
 // ---------------------------------------------------------------------------
 // CCS Verifier Core (pure stdlib Node.js)
@@ -604,6 +608,38 @@ const TOOLS = [
       required: ["receipt"],
     },
   },
+  {
+    name: "locate_tampering",
+    title: "Locate which fields differ between two artifacts",
+    description:
+      "Field-level tamper localization. Given an original and a suspect artifact, returns an " +
+      "RFC 6901 JSON-Pointer list of every changed field with change type, before/after values, " +
+      "severity, and remediation. This is what verify_receipt alone cannot tell you: it says WHICH " +
+      "field changed, not merely that the signature failed. Severity is assigned by field semantics " +
+      "(verdict-bearing fields are critical), not by diff size.",
+    annotations: {
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
+    inputSchema: {
+      type: "object",
+      properties: {
+        original: {
+          type: "object",
+          description: "The trusted/original artifact (receipt, evidence record, or config).",
+          additionalProperties: true,
+        },
+        suspect: {
+          type: "object",
+          description: "The artifact to compare against the original.",
+          additionalProperties: true,
+        },
+      },
+      required: ["original", "suspect"],
+    },
+  },
 ];
 
 function handleRequest(req) {
@@ -649,6 +685,18 @@ function handleRequest(req) {
           content: [{ type: "text", text: JSON.stringify(verdict, null, 2) }],
           isError: verdict.allowed === false,
         };
+      } else if (name === "locate_tampering") {
+        if (typeof args.original !== "object" || args.original === null ||
+            typeof args.suspect !== "object" || args.suspect === null) {
+          result = {
+            content: [{ type: "text",
+              text: "Error: both 'original' and 'suspect' must be JSON objects." }],
+            isError: true,
+          };
+        } else {
+          const report = tamper.buildReport(args.original, args.suspect);
+          result = { content: [{ type: "text", text: JSON.stringify(report, null, 2) }] };
+        }
       } else if (name === "verify_receipt") {
         const v = args.expected_signer
           ? receipts.verifyReceiptWithKey(args.receipt, args.expected_signer)
@@ -692,4 +740,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { verifyCall, auditMcpConfig, verifyIntentBinding, receipts };
+module.exports = { verifyCall, auditMcpConfig, verifyIntentBinding, receipts, tamper };

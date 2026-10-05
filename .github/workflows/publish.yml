@@ -1,0 +1,135 @@
+name: Publish
+
+# 触发：手动，或推送 v* 标签
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '只做构建与测试，不实际发布'
+        type: boolean
+        default: false
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write   # MCP Registry OIDC 发布需要
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 关卡：测试不过，后面全部不执行
+  # ---------------------------------------------------------------------------
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Run test suite
+        run: node test/run-tests.js
+      - name: Smoke test — server must answer initialize
+        run: |
+          printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"ci","version":"1"}}}' \
+            | timeout 20 node src/index.js \
+            | head -1 \
+            | grep -q '"serverInfo"' \
+            && echo "initialize OK"
+      - name: Verify tool count
+        run: |
+          printf '%s\n' \
+            '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"ci","version":"1"}}}' \
+            '{"jsonrpc":"2.0","method":"notifications/initialized"}' \
+            '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+          | timeout 20 node src/index.js | tail -1 > /tmp/tools.json
+          COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('/tmp/tools.json','utf8')).result.tools.length)")
+          echo "tools=$COUNT"
+          test "$COUNT" -ge 6
+
+  # ---------------------------------------------------------------------------
+  # 发布 agent-runtime-guard（本仓库的主包名）
+  # ---------------------------------------------------------------------------
+  publish-agent-runtime-guard:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish
+        if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Dry run
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
+        run: npm publish --access public --dry-run
+
+  # ---------------------------------------------------------------------------
+  # 从同一源码发布 ccs-mcp-server
+  #
+  # 这条 job 存在的理由：npm 上的 ccs-mcp-server 与 agent-runtime-guard
+  # 出自同一份源码，但此前是手工改 package.json 后分别发布的，
+  # 导致仓库（1.0.0）与 npm（1.2.17）长期脱节。
+  # 现在由 CI 统一改写 name/bin/mcpName 后发布，两者永不漂移。
+  # ---------------------------------------------------------------------------
+  publish-ccs-mcp-server:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Rewrite package.json for the ccs-mcp-server identity
+        run: |
+          node - <<'JS'
+          const fs = require('fs');
+          const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          p.name = 'ccs-mcp-server';
+          p.bin = { 'ccs-mcp-server': 'src/index.js' };
+          p.mcpName = 'io.github.DSHCorrectover/ccs-mcp-server';
+          p.repository = { type: 'git', url: 'git+https://github.com/DSHCorrectover/agent-runtime-guard.git' };
+          // dsh 目录不属于这个包
+          delete p.peerDependencies;
+          delete p.peerDependenciesMeta;
+          delete p.exports['./dsh'];
+          delete p.exports['./dsh/cordis.patch.yml'];
+          p.files = p.files.filter(f => f !== 'dsh');
+          fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n');
+          console.log('rewritten:', p.name, p.version, JSON.stringify(p.bin));
+          JS
+          rm -rf dsh
+      - name: Verify test suite still passes after rewrite
+        run: node test/run-tests.js
+      - name: Publish
+        if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Dry run
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
+        run: npm publish --access public --dry-run
+
+  # ---------------------------------------------------------------------------
+  # 发布到 MCP 官方 Registry（OIDC，无需任何长期密钥）
+  # ---------------------------------------------------------------------------
+  publish-mcp-registry:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install mcp-publisher
+        run: |
+          curl -sL --retry 3 \
+            "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" \
+            | tar xz mcp-publisher
+          chmod +x mcp-publisher
+      - name: Publish server.json
+        run: |
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
