@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/agent-runtime-guard.svg)](https://www.npmjs.com/package/agent-runtime-guard)
 
 > **给 AI Agent 配一个运行时保安：它删库、偷密钥、闯内网、被注入诱导——当场拦下。**
-> 每次放行或拦截，都出具一张 Ed25519 签名、谁也赖不掉的证据单子。
+> 它是一道**运行时拦截层**，不是事后审计工具：危险动作在执行点就被挡住；每张 Ed25519 签名收据，都是拦截/放行时当场附带的裁决凭证。
 
 你给 Agent 接上 shell、网络、云凭证这些工具后，最大的风险是：**它手一抖，一条命令删掉整台机器；或被诱导，把密钥和数据偷偷传走。** 一个容易点过的"确认弹窗"挡不住。
 
