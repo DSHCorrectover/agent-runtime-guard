@@ -1,0 +1,5 @@
+# agent-runtime-guard DSH plugin bundle layer:
+# auto-mounts when installed via `dsh plugin add agent-runtime-guard`.
+- insert:
+    - id: agent-runtime-guard
+      name: agent-runtime-guard/dsh

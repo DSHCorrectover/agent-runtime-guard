@@ -1,0 +1,83 @@
+{
+  "name": "agent-runtime-guard",
+  "version": "1.0.0",
+  "description": "Agent runtime guard — full-stack runtime interception for AI agents (Agent 运行时全栈拦截). A zero-dependency MCP server that blocks destructive commands, credential theft, SSRF and injection in real time, with Ed25519 evidence receipts. Works with Claude Code, Cursor, Cline, Windsurf and DeepSeek Harness.",
+  "type": "commonjs",
+  "bin": {
+    "agent-runtime-guard": "src/index.js",
+    "ccs-mcp-server": "src/index.js"
+  },
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./receipts": "./src/receipts.js",
+    "./dsh": "./dsh/index.js",
+    "./dsh/cordis.patch.yml": "./dsh/cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "dsh",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "agent-runtime",
+    "agent-security",
+    "ai-agent-security",
+    "runtime-interception",
+    "runtime-verification",
+    "agent-guard",
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "mcp-security",
+    "claude",
+    "claude-code",
+    "cursor",
+    "cline",
+    "windsurf",
+    "deepseek-harness",
+    "dsh-plugin",
+    "command-injection",
+    "ssrf",
+    "credential-protection",
+    "prompt-injection",
+    "tool-call-guardrail",
+    "ed25519",
+    "tamper-evident",
+    "fail-closed",
+    "correctover",
+    "supply-chain-security"
+  ],
+  "license": "Elastic-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DSHCorrectover/agent-runtime-guard.git"
+  },
+  "homepage": "https://github.com/DSHCorrectover/agent-runtime-guard#readme",
+  "bugs": {
+    "url": "https://github.com/DSHCorrectover/agent-runtime-guard/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@deepseek-ai/dsh": ">=0.2.1-alpha.1 <0.3.0-0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "test": "node test/run-tests.js"
+  },
+  "mcp": {
+    "name": "agent-runtime-guard",
+    "displayName": "Agent Runtime Guard",
+    "description": "Full-stack runtime interception for AI agents — blocks destructive commands, credential theft, SSRF and injection, with Ed25519 evidence receipts."
+  },
+  "mcpName": "io.github.DSHCorrectover/agent-runtime-guard"
+}
