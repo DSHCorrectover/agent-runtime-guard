@@ -136,11 +136,11 @@ Background: [CCS 7-dimension draft](https://datatracker.ietf.org/doc/draft-corre
 
 ---
 
-## Commercial
+## Commercial (USD · overseas)
 
-Runtime verification and receipt issuance are free. Human audits and private deploys are commercial — **pricing is not published** (scoping required).
+| Offering | Price |
+|
 
-Contact: **wangguigui@correctover.com** — you'll receive a scoping questionnaire and a tailored quote (async email only).
 ----------|------|
 | Runtime intercept + Ed25519 receipts (this package) | **Free** |
 | Config / bundle scan ([correctover-scan](https://github.com/DSHCorrectover/correctover-scan)) | **Free** |
