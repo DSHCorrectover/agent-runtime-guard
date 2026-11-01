@@ -162,7 +162,7 @@ npx -y agent-runtime-guard
 | 场景 | 方式 |
 |------|------|
 | MCP 客户端 | `mcpServers` 配置如上 |
-| DeepSeek Harness | `dsh plugin add agent-runtime-guard` |
+| DeepSeek Harness（v0.2.1+，插件随本包 `dsh/` 附带） | harness 内 `dsh plugin add agent-runtime-guard`；未部署 harness 时用 MCP 或代理方式 |
 | 不信任宿主插件 | [`agent-runtime-proxy`](https://www.npmjs.com/package/agent-runtime-proxy) 透明代理 |
 
 ### 与「发现类」工具的关系
