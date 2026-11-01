@@ -38,7 +38,7 @@ Discovery does not block a single `curl|sh`. We do not map your SaaS agent estat
 ## Public proof assets
 
 - npm: `npx -y agent-runtime-guard`
-- Census data: [mcp-atlas-census](https://github.com/DSHCorrectover/mcp-atlas-census) (229,827 tools, CC0)
+- Census data: [m[mcp-atlas-census](https://github.com/DSHCorrectover/mcp-atlas-census) (229,827 tools, CC0)
 - Standard draft: [draft-correctover-ccs](https://datatracker.ietf.org/doc/draft-correctover-ccs/)
 
 ## Not claims we make
