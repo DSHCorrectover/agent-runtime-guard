@@ -36,6 +36,10 @@ Keyword denylists and “confirm” dialogs are not enough. Prefix allow rules (
 
 ---
 
+## Install by tool
+
+**[INSTALL.md](./INSTALL.md)** — Cursor · Claude Code · Cline · Windsurf · proxy · DeepSeek Harness.
+
 ## 30-second start
 
 ```bash
