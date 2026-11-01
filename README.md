@@ -4,8 +4,9 @@
 [![npm version](https://img.shields.io/npm/v/agent-runtime-guard.svg)](https://www.npmjs.com/package/agent-runtime-guard)
 [![License: ELv2](https://img.shields.io/badge/License-ELv2-orange.svg)](./LICENSE)
 
-**Fail-closed runtime interception for AI agents.**  
-Blocks destructive commands, SSRF (incl. cloud metadata), credential exfil, and cross-tool attack chains **before execution** — and emits **Ed25519-signed evidence receipts** you can verify offline.
+**Reference implementation of CCS** ([IETF draft-correctover-ccs](https://datatracker.ietf.org/doc/draft-correctover-ccs/) — Internet-Draft, not an RFC).
+
+Fail-closed runtime interception for AI agents: blocks destructive commands, SSRF (incl. cloud metadata), credential exfil, and cross-tool attack chains **before execution** — and emits **Ed25519-signed evidence receipts** verifiable fully offline (VERIFIED trust level).
 
 > 中文说明见下方 [中文](#中文--agent-运行时全栈拦截)
 
@@ -135,10 +136,19 @@ Background: [CCS 7-dimension draft](https://datatracker.ietf.org/doc/draft-corre
 
 ---
 
-## Commercial
+## Commercial (USD · overseas)
 
-Runtime verification and receipt issuance are free to use.  
-Human deep audit / formal compliance packages: [SkillPay](https://skillpay.alipay.com/public/correctover) · wangguigui@correctover.com
+| Offering | Price |
+|----------|------|
+| Runtime intercept + Ed25519 receipts (this package) | **Free** |
+| Config / bundle scan ([correctover-scan](https://github.com/DSHCorrectover/correctover-scan)) | **Free** |
+| Standard MCP / agent audit (CCS-mapped report) | **$2,500** |
+| Deep 116-check audit | **$8,000+** |
+| Private deploy evaluation (60 days, credit to year-1) | **$5,000** |
+| Annual private deploy | **$25,000 / year** |
+
+Contact: **wangguigui@correctover.com** (invoice / wire).  
+GTM: [correctover-gtm.pages.dev](https://correctover-gtm.pages.dev/)
 
 ---
 
