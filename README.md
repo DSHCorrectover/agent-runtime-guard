@@ -143,9 +143,7 @@ Background: [CCS 7-dimension draft](https://datatracker.ietf.org/doc/draft-corre
 ## Commercial (USD · overseas)
 
 | Offering | Price |
-|
-
-----------|------|
+|----------|------|
 | Runtime intercept + Ed25519 receipts (this package) | **Free** |
 | Config / bundle scan ([correctover-scan](https://github.com/DSHCorrectover/correctover-scan)) | **Free** |
 | Standard MCP / agent audit (CCS-mapped report) | **$2,500** |
