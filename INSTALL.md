@@ -117,20 +117,10 @@ No dashboard account required for **VERIFIED** level checks.
 
 ## Paid path (USD · overseas)
 
-Runtime is free. Need a CCS-mapped human report or private deploy?
+Runtime is free. Human audit and private deploy require scoping — **list prices are not published** here.
 
-| SKU | Price |
-|-----|------|
-| Standard audit | $2,500 |
-| Deep 116-check | $8,000+ |
-| Private deploy eval (60 days) | $5,000 |
-| Annual private deploy | $25,000/yr |
+Email **wangguigui@correctover.com** with subject `Audit request` or `Private deploy eval` (redacted config → free 1-page summary → scoped quote).
 
-Email: **wangguigui@correctover.com**  
-Subject line: `Audit request` or `Eval $5k`  
-GTM: https://correctover-gtm.pages.dev/
-
----
 
 ## Security notes
 
