@@ -142,17 +142,15 @@ Background: [CCS 7-dimension draft](https://datatracker.ietf.org/doc/draft-corre
 
 ## Commercial (USD · overseas)
 
-| Offering | Price |
-|----------|------|
-| Runtime intercept + Ed25519 receipts (this package) | **Free** |
-| Config / bundle scan ([correctover-scan](https://github.com/DSHCorrectover/correctover-scan)) | **Free** |
-| Standard MCP / agent audit (CCS-mapped report) | **$2,500** |
-| Deep 116-check audit | **$8,000+** |
-| Private deploy evaluation (60 days, credit to year-1) | **$5,000** |
-| Annual private deploy | **$25,000 / year** |
+Runtime intercept and config scan are free to use.
 
-Contact: **wangguigui@correctover.com** (invoice / wire).  
+Human audit and private deploy are **scoped per engagement** — pricing is **not published** on this page (signed price card).  
+Start with a free 1-page summary: **wangguigui@correctover.com** (redacted MCP/agent config welcome).
+
 GTM: [correctover-gtm.pages.dev](https://correctover-gtm.pages.dev/)
+
+---
+
 
 ---
 
