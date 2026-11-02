@@ -136,20 +136,18 @@ Background: [CCS 7-dimension draft](https://datatracker.ietf.org/doc/draft-corre
 | [`correctover`](https://www.npmjs.com/package/correctover) | SDK + GuardrailProvider + DSH plugin |
 | [`correctover-scan`](https://www.npmjs.com/package/correctover-scan) | MCP / agent config scanner |
 | [`agent-runtime-proxy`](https://www.npmjs.com/package/agent-runtime-proxy) | Transparent stdio proxy |
-| [m[m[m[mcp-atlas-census](https://github.com/DSHCorrectover/mcp-atlas-census) | 229,827 tool records (CC0) |
+| [mcp-atlas-census](https://github.com/DSHCorrectover/mcp-atlas-census) | 229,827 tool records (CC0) |
 
 ---
 
-## Commercial (USD · overseas)
+## Commercial (overseas)
 
 | Offering | Price |
 |----------|------|
 | Runtime intercept + Ed25519 receipts (this package) | **Free** |
 | Config / bundle scan ([correctover-scan](https://github.com/DSHCorrectover/correctover-scan)) | **Free** |
-| Standard MCP / agent audit (CCS-mapped report) | **$2,500** |
-| Deep 116-check audit | **$8,000+** |
-| Private deploy evaluation (60 days, credit to year-1) | **$5,000** |
-| Annual private deploy | **$25,000 / year** |
+
+Paid work (human CCS-mapped audit, private deploy) is scoped 1:1 — written quote follows scoping, not listed here.
 
 Contact: **wangguigui@correctover.com** (invoice / wire).  
 GTM: [correctover-gtm.pages.dev](https://correctover-gtm.pages.dev/)
