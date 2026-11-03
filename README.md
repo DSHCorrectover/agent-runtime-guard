@@ -140,16 +140,19 @@ Background: [CCS 7-dimension draft](https://datatracker.ietf.org/doc/draft-corre
 
 ---
 
-## Commercial (overseas)
+## Commercial
 
-| Offering | Price |
-|----------|------|
+| Offering | Price (USD) |
+|----------|-------------|
 | Runtime intercept + Ed25519 receipts (this package) | **Free** |
 | Config / bundle scan ([correctover-scan](https://github.com/DSHCorrectover/correctover-scan)) | **Free** |
+| Standard human audit (CCS-mapped, evidence-grade) | **$2,500** |
+| Deep audit + PoC + remediation roadmap | **$8,000+** |
+| Private deploy / integration support | **$5,000** |
+| Annual retainer (monitoring + emergency) | **$25,000/yr** |
 
-Paid work (human CCS-mapped audit, private deploy) is scoped 1:1 — written quote follows scoping, not listed here.
+Formal quote follows written scoping (async email only). Contact: **wangguigui@correctover.com**
 
-Contact: **wangguigui@correctover.com** (invoice / wire).  
 GTM: [correctover-gtm.pages.dev](https://correctover-gtm.pages.dev/)
 
 ---
