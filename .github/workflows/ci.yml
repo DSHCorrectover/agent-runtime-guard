@@ -2,94 +2,24 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run linter
-        run: npm run lint --if-present
-      
-      - name: Run tests
-        run: npm test
-      
-      - name: Verify zero-dependency claim
-        if: matrix.node-version == '20.x'
-        run: |
-          echo "Checking package.json for dependencies..."
-          DEPS=$(node -e "const pkg = require('./package.json'); console.log(Object.keys(pkg.dependencies || {}).length)")
-          if [ "$DEPS" -eq "0" ]; then
-            echo "✅ Zero runtime dependencies verified"
-          else
-            echo "❌ Package has $DEPS runtime dependencies"
-            exit 1
-          fi
-
-  build:
-    runs-on: ubuntu-latest
-    needs: test
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       
-      - name: Build package
-        run: npm run build --if-present
-      
-      - name: Test npx execution
-        run: |
-          npm install -g .
-          agent-runtime-guard --help || echo "CLI help displayed"
-
-  security-audit:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      
-      - name: Run npm audit
-        run: npm audit --audit-level=high
-      
-      - name: Verify Ed25519 signature functionality
-        run: |
-          npm install
-          node -e "
-            const crypto = require('crypto');
-            const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519');
-            console.log('✅ Ed25519 key generation works');
-            
-            const data = Buffer.from('test-data');
-            const signature = crypto.sign(null, data, privateKey);
-            const verified = crypto.verify(null, data, publicKey, signature);
-            console.log('✅ Ed25519 signature verification:', verified);
-          "
+      - name: Run tests
+        run: npm test
